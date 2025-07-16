@@ -1,4 +1,25 @@
+# Ignore Docker compose file contenant la config sensible
 docker-compose.yml
+
+# Ignore les fichiers d’environnement qui contiennent souvent les mots de passe
 .env
 .env.local
 .env.*.local
+
+# Ignore les fichiers et dossiers générés par Symfony
+/var/
+/vendor/
+/node_modules/
+/public/bundles/
+
+# Ignore les fichiers de cache et logs
+*.log
+*.cache
+
+# Ignore les fichiers système
+.DS_Store
+Thumbs.db
+
+# Ignore les fichiers de configuration de l’éditeur (optionnel)
+.vscode/
+.idea/
