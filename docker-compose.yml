@@ -1,0 +1,80 @@
+version: "3.8"
+
+services:
+  # Service PHP (avec Xdebug et PDO)
+  php:
+    container_name: php-e_commerce
+    build:
+      context: .
+    ports:
+      - "9003:9003"
+    volumes:
+      - ./symfony:/var/www/html
+      - ./.docker/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./.docker/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    environment:
+      XDEBUG_MODE: develop,debug
+      XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
+      APP_ENV: dev
+    depends_on:
+      - db
+      - mailhog
+    networks:
+      - symfony
+    restart: unless-stopped
+
+  # Service nginx
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./symfony:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - symfony
+    restart: unless-stopped
+
+  # Service database
+  db:
+    container_name: mysql-container
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ma-base-de-données
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - symfony
+    restart: unless-stopped
+
+  # Service mailhog
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+    networks:
+      - symfony
+    restart: unless-stopped
+
+  # Supprime si tu n'en as pas besoin
+  # # Service symfony
+  # symfony:
+  #   image: symfonycli/symfony-cli:latest
+  #   volumes:
+  #     - ./symfony:/app
+  #   depends_on:
+  #     - php
+  #   networks:
+  #     - symfony
+  #   restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  symfony:
+    driver: bridge
