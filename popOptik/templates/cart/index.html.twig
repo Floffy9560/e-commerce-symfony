@@ -1,0 +1,110 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/cart.css') }}">
+{% endblock %}
+
+{% block body %}
+
+{% if app.flashes is not empty %}
+    <section class="flash-messages">
+        {% for label, messages in app.flashes %}
+            <div class="flash-{{ label }}">
+                <button class="flash-close" aria-label="Fermer">&times;</button>
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </section>
+{% endif %}
+
+<section class="principalSection">
+
+    <h1>Votre panier</h1>
+
+    {% if cart is not empty %}
+        <table>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Total</th>
+            </tr>
+            {% for entry in cart %}
+                <tr>
+                    <td>{{ entry.item.name }}</td>
+                    <td>{{ entry.quantity }}</td>
+                    <td>{{ entry.item.price|number_format(2, ',', ' ') }} €</td>
+                    <td>{{ (entry.item.price * entry.quantity)|number_format(2, ',', ' ') }} €</td>
+                    <td>
+                        <a href="{{ path('cart_remove', {id: entry.id}) }}" onclick="return confirm('Voulez-vous vraiment retirer ce produit ?');">🗑 Retirer</a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+        <h3>Total : {{ total|number_format(2, ',', ' ') }} €</h3>
+
+    {% else %}
+        <p>Votre panier est vide.</p>
+    {% endif %}
+
+</section>
+
+{% endblock %}
+ #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/cart.css') }}">
+{% endblock %}
+
+{% block body %}
+<section class="principalSection">
+    <h2>Mon panier</h2>
+
+    {% if cart is empty %}
+        <p>Votre panier est vide.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in cart %}
+                    <tr>
+                        <td>{{ entry.item.name }}</td>
+                        <td>{{ entry.item.price }} €</td>
+                        <td>
+                            {{ entry.quantity }}
+                            <a href="{{ path('cart_update', {id: entry.id, action: 'increase'}) }}">➕</a>
+                            <a href="{{ path('cart_update', {id: entry.id, action: 'decrease'}) }}">➖</a>
+                        </td>
+                        <td>{{ (entry.item.price * entry.quantity) | number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <a href="{{ path('cart_remove', {id: entry.id}) }}">❌ Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Total général : {{ total | number_format(2, ',', ' ') }} €</h3>
+
+        <a href="{{ path('cart_clear') }}" class="btn btn-danger">Vider le panier</a>
+    {% endif %}
+</section>
+{% endblock %}

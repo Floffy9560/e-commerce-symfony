@@ -1,0 +1,42 @@
+.divIndex {
+  width: 80%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px black;
+  margin: auto;
+  transition: transform 0.5s ease-in-out;
+}
+
+.divIndex:hover {
+  transform: scale(0.95);
+}
+.divIndex p {
+  font-size: 50px;
+  color: gainsboro;
+  font-weight: bold;
+  font-style: italic;
+  /* border-radius: 8px;
+  background: gainsboro; */
+}
+.one {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/assets/img/open-shop.jpg") center/cover no-repeat;
+}
+
+.two {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/assets/img/intérieur-mag.jpg") center/cover no-repeat;
+}
+.tree {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/assets/img/appointment.jpg") center/cover no-repeat;
+}
+.four {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/assets/img/engagement.jpg") center/cover no-repeat;
+}

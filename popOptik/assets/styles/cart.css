@@ -1,0 +1,100 @@
+.principalSection h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+h1 {
+  margin-bottom: 35px;
+}
+.principalSection table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.principalSection th,
+.principalSection td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.principalSection th {
+  background-color: #34495e;
+  color: #ecf0f1;
+  font-weight: 600;
+}
+
+.principalSection tr:nth-child(even) {
+  background-color: #f0f3f4;
+}
+
+.principalSection tr:hover {
+  background-color: #dce6ea;
+}
+
+.principalSection h3 {
+  text-align: right;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #2c3e50;
+}
+
+.principalSection p {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
+.principalSection a {
+  color: #c0392b;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.principalSection a:hover {
+  text-decoration: underline;
+}
+.flash-messages {
+  max-width: 800px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.flash-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 12px 20px;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(21, 87, 36, 0.2);
+}
+
+.flash-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 12px 20px;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(114, 28, 36, 0.2);
+}
+.flash-success p,
+.flash-error p {
+  margin: 0;
+}
+.flash-close {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: inherit;
+  float: right;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 0.5rem;
+}
+.flash-close:hover {
+  color: #555;
+}

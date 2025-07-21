@@ -1,0 +1,154 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Nos lunettes{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/glass.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<section class="principalSection">
+
+    <h2>Liste des lunettes</h2>
+
+    <select id="categoryFilter">
+        <option value="">Tous</option>
+        {% for category in categories %}
+            <option value="{{ category.name|lower|replace({' ':'_'}) }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <div id="products">
+        {% if glasses is empty %}
+            <p>Aucun produit trouvé.</p>
+        {% else %}
+            <div id="products-list">
+                {% for glass in glasses %}
+                    <div class="product-item" data-category="{{ glass.category ? glass.category.name|lower|replace({' ':'_'}) : 'undefined' }}">
+                        <img src="{{ glass.imagePath }}" alt="{{ glass.item.name }}">
+                        <h3>{{ glass.item ? glass.item.name : 'Nom non défini' }}</h3>
+                        <p>Prix : {{ glass.item ? glass.item.price|number_format(2, ',', ' ') : 'Prix non défini' }} €</p>
+                        <p>Catégorie : {{ glass.category ? glass.category.name : 'Non définie' }}</p>
+                        <p>Couleur : {{ glass.color ?: 'Non définie' }}</p>
+                        <p>Forme : {{ glass.shape ?: 'Non définie' }}</p>
+                        <p>Matière : {{ glass.matter ?: 'Non définie' }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+</section>
+
+<script>
+  const filter = document.getElementById('categoryFilter');
+  const products = document.querySelectorAll('.product-item');
+
+  filter.addEventListener('change', () => {
+    const selected = filter.value;
+    products.forEach(prod => {
+      prod.style.display = selected === '' || prod.dataset.category === selected ? 'block' : 'none';
+    });
+  });
+</script>
+
+{% endblock %} #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos lunettes{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/glass.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<section class="principalSection">
+
+    <h2>Liste des lunettes</h2>
+
+    <div class="filters">
+        <label for="categoryFilter">Catégorie :</label>
+        <select id="categoryFilter">
+            <option value="">Tous</option>
+            {% for category in categories %}
+                <option value="{{ category.name|lower|replace({' ':'_'}) }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="genderFilter">Genre :</label>
+        <select id="genderFilter">
+            <option value="">Tous</option>
+            {% for gender in genders %}
+                <option value="{{ gender.gender|lower }}">{{ gender.gender }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="brandFilter">Marque :</label>
+        <select id="brandFilter">
+            <option value="">Toutes</option>
+            {% for brand in brands %}
+                <option value="{{ brand.name|lower|replace({' ':'_'}) }}">{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div id="products">
+        {% if glasses is empty %}
+            <p>Aucun produit trouvé.</p>
+        {% else %}
+            <div id="products-list">
+                {% for glass in glasses %}
+                
+                    <div class="product-item"
+                         data-category="{{ glass.category ? glass.category.name|lower|replace({' ':'_'}) : 'undefined' }}"
+                         data-gender="{{ glass.gender ? glass.gender.gender|lower : 'undefined' }}"
+                         data-brand="{{ glass.brand ? glass.brand.name|lower|replace({' ':'_'}) : 'undefined' }}">
+                        <img src="{{ asset(glass.imagePath) }}" alt="Image de la lunette">
+                        <h3>{{ glass.item ? glass.item.name : 'Nom non défini' }}</h3>
+                        <p>Prix : {{ glass.item ? glass.item.price : 'Prix non défini' }} €</p>
+                        <p>Catégorie : {{ glass.category ? glass.category.name : 'Non définie' }}</p>
+                        <p>Genre : {{ glass.gender ? glass.gender.gender : 'Non défini' }}</p>
+                        <p>Marque : {{ glass.brand ? glass.brand.name : 'Non définie' }}</p>
+
+                        {# BOUTON AJOUTER AU PANIER #}
+                        <a href="{{ path('cart_add', { id: glass.id }) }}" class="add-to-cart-btn">
+                            🛒 Ajouter au panier
+                        </a>
+                    </div>
+
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+</section>
+
+<script>
+  const categoryFilter = document.getElementById('categoryFilter');
+  const genderFilter = document.getElementById('genderFilter');
+  const brandFilter = document.getElementById('brandFilter');
+  const products = document.querySelectorAll('.product-item');
+
+  function filterProducts() {
+    const selectedCategory = categoryFilter.value;
+    const selectedGender = genderFilter.value;
+    const selectedBrand = brandFilter.value;
+
+    products.forEach(prod => {
+      const matchCategory = !selectedCategory || prod.dataset.category === selectedCategory;
+      const matchGender = !selectedGender || prod.dataset.gender === selectedGender;
+      const matchBrand = !selectedBrand || prod.dataset.brand === selectedBrand;
+
+      prod.style.display = (matchCategory && matchGender && matchBrand) ? 'block' : 'none';
+    });
+  }
+
+  categoryFilter.addEventListener('change', filterProducts);
+  genderFilter.addEventListener('change', filterProducts);
+  brandFilter.addEventListener('change', filterProducts);
+</script>
+
+{% endblock %}

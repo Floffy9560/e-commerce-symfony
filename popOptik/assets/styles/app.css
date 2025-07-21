@@ -1,0 +1,147 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(236, 230, 230);
+}
+a {
+  text-decoration: none;
+}
+/* 
+** HEADER 
+   ====== */
+header {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+  background-color: transparent; /* par défaut transparent */
+}
+
+/* Quand on scrolle */
+header.scrolled {
+  background-color: rgba(0, 0, 0, 0.9); /* fond sombre semi-transparent */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: gainsboro;
+}
+
+/* === LOGO & TITRE === */
+#nameShop {
+  font-size: 40px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+header.scrolled#nameShop {
+  color: gainsboro;
+}
+
+.logo {
+  height: 100%;
+}
+
+.logoShop {
+  height: 100%;
+}
+
+/* === NAVIGATION === */
+.ulNav {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  padding-right: 15px;
+}
+
+/* Liens par défaut */
+.ulNavLink {
+  text-decoration: none;
+  color: #2c2c2c;
+  transition: color 0.3s ease;
+}
+
+/* Liens quand header est scrolled */
+header.scrolled .ulNavLink {
+  color: gainsboro;
+}
+
+/* Li par défaut */
+.navLi {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: gainsboro;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Li quand header est scrolled */
+header.scrolled .navLi {
+  background-color: #2c2c2c;
+}
+
+/* Hover */
+.navLi:hover {
+  background-color: lavender;
+  transform: scale(1.2);
+}
+header.scrolled .navLi:hover {
+  background-color: gray;
+}
+
+/* === BURGER MENU === */
+.menuBurger {
+  display: none;
+}
+.bi-list {
+  font-size: 50px;
+}
+
+/* === CONTENU PRINCIPAL === */
+.principalSection {
+  margin-top: 5rem;
+  padding: 25px 0;
+  min-height: calc(100vh - 10rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* === FOOTER === */
+footer {
+  width: 100%;
+  height: 5rem;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2c2c2c;
+}
+
+footer p {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: gainsboro;
+  cursor: pointer;
+}
+
+/* === RESPONSIVE === */
+@media screen and (max-width: 1300px) {
+  .ulNav {
+    display: none;
+  }
+  .menuBurger {
+    display: block;
+  }
+}

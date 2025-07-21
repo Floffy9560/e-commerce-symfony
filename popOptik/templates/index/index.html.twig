@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site e-commerce{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<section class="principalSection">
+
+    <div class="divIndex one">
+        <p>Qui somme nous?</p>
+    </div>
+
+    <div class="divIndex two">
+        <p>Infos magasin</p>
+    </div>
+
+    <div class="divIndex tree">
+        <p>Prendre un rendez-vous</p>  
+    </div>
+
+    <div class="divIndex four">
+        <p>Nos engagements</p>
+    </div>
+
+</section>
+
+{% endblock %}
