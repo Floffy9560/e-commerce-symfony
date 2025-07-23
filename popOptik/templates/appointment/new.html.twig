@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}📅 Prendre un rendez-vous{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/appointment.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<section class="principalSection appointment-container">
+    <h1 class="appointment-title">📅 Prendre un rendez-vous</h1>
+
+    {% if app.flashes is not empty %}
+        <script>
+            window.flashMessages = [];
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    window.flashMessages.push({type: "{{ label }}", text: "{{ message|e('js') }}"});
+                {% endfor %}
+            {% endfor %}
+        </script>
+    {% endif %}
+
+
+    <!-- Calendrier -->
+    <div id="calendar"></div>
+
+    <!-- Créneaux horaires disponibles -->
+    <div id="slots-container">
+        <h2 style="margin-top:20px; text-align:center;">
+            Créneaux disponibles : <span id="selected-date">veuillez selectionner une date</span>
+        </h2>
+        <div id="available-slots"></div>
+
+        <!-- Bouton de confirmation -->
+        <div style="text-align:center;">
+            <button id="confirm-btn">✅ Confirmer ce rendez-vous</button>
+        </div>
+    </div>
+
+    <div id="flash-popup" class="flash-popup" style="display:none;">
+        <span id="flash-message"></span>
+        <button id="flash-close">✖</button>
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# === FullCalendar en mode global (CDN) === #}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.18/index.global.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/web-component@6.1.18/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.18/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.18/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.18/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.18/locales/fr.global.min.js"></script>
+    
+{% endblock %}
+
+

@@ -1,0 +1,44 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+    <h1 style="text-align: center; margin-bottom: 30px;">Bienvenue sur le Backoffice</h1>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    ">
+        <div style="
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        ">
+            <h2>👤 Utilisateurs</h2>
+            <p>Gérez les utilisateurs du site</p>
+        </div>
+
+        <div style="
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        ">
+            <h2>📦 Produits</h2>
+            <p>Ajoutez et modifiez les articles</p>
+        </div>
+
+        <div style="
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        ">
+            <h2>🛒 Commandes</h2>
+            <p>Consultez les commandes</p>
+        </div>
+    </div>
+{% endblock %}

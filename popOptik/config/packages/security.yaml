@@ -36,6 +36,8 @@ security:
     - { path: ^/cart, roles: ROLE_USER }
     # Exemple, protéger /profile aussi
     - { path: ^/profile, roles: ROLE_USER }
+    # Protéger /admin pour les admins connectés uniquement
+    - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
   security:

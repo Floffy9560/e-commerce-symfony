@@ -3,17 +3,126 @@
 {% block title %}Espace abonné{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('styles/connexion.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/userAccount.css') }}">
 {% endblock %}
 
 
 {% block body %}
 <section class="principalSection">
-    <h1>Vos infos</h1>
 
-    <p><strong>ID :</strong> {{ user.id }}</p>
-    <p><strong>Email :</strong> {{ user.userInfo.email }}</p>
-    <p><strong>Date de naissance :</strong> {{ user.dayOfBirth }}/{{ user.monthOfBirth }}/{{ user.yearOfBirth }}</p>
-    <p><strong>Rôle :</strong> {{ user.role.name }}</p>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+        <h1>Bienvenue {{ user.firstname }} !</h1>
+
+        <div class="userInfo">
+            <p>Voici vos informations personnelles et vos actions possibles.</p>
+            <h1>Vos infos</h1>
+            <div class="userInfo__item">
+                <p><strong>Email :</strong> {{ user.userInfo.email }}</p>
+            </div>
+
+            <div class="userInfo__item">
+                <p><strong>Date de naissance :</strong> {{ user.dayOfBirth }}/{{ user.monthOfBirth }}/{{ user.yearOfBirth }}</p>
+            </div>
+
+            <div class="userInfo__item">
+                <p><strong>Rôle :</strong> {{ user.roles|join(', ') }}</p>
+            </div>
+
+            <div class="userInfo__item">
+                <p><strong>Adresse :</strong> {{ user.userInfo.address }}</p>
+            </div>
+
+            <div class="userInfo__item">
+                <p><strong>Rendez-vous :</strong></p>
+                {% if user.appointments is empty %}
+                    <p>Aucun rendez-vous prévu.</p>
+                {% else %}
+                    <ul class="appointments">
+                        {% for appointment in user.appointments %}
+                            <li class="appointment">
+                                {{ appointment.appointmentDate|date('d/m/Y') }} 
+                                à 
+                                {{ appointment.appointmentHour|date('H:i') }}
+                                 <!-- Bouton pour ouvrir la modal -->
+                                <button class="btn btn-sm btn-primary edit-appointment-btn" 
+                                        data-id="{{ appointment.id }}">
+                                    Modifier
+                                </button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="calendarOverlay" class="overlay" style="display:none;">
+            <div id="editAppointmentModal" class="modal">
+                <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Modifier le rendez-vous</h2>
+                <div id="calendar"></div>
+                <!-- La sélection d'heure sera injectée ici -->
+                </div>
+            </div>
+        </div>
+
+{# ============ A ajouter pour la modification des informations de l'utilisateur ============ #}
+
+    {# <h2>Modifier vos informations</h2>
+    <form action="{{ path('app_user_update') }}" method="post">
+        <div class="form-group">
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" value="{{ user.userInfo.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Adresse :</label>
+            <input type="text" id="address" name="address" value="{{ user.userInfo.address }}" required>
+        </div>
+        <div class="form-group">
+            <label for="dayOfBirth">Date de naissance :</label>
+            <input type="number" id="dayOfBirth" name="dayOfBirth" value="{{ user.dayOfBirth }}" min="1" max="31" required>
+            <input type="number" id="monthOfBirth" name="monthOfBirth" value="{{ user.monthOfBirth }}" min="1" max="12" required>
+            <input type="number" id="yearOfBirth" name="yearOfBirth" value="{{ user.yearOfBirth }}" min ="1900" max="{{ 'now'|date('Y') }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    </form>
+    <h2>Changer votre mot de passe</h2>
+    <form action="{{ path('app_user_change_password') }}" method="post">
+        <div class="form-group">
+            <label for="currentPassword">Mot de passe actuel :</label>
+            <input type="password" id="currentPassword" name="currentPassword" required>
+        </div>
+        <div class="form-group">
+            <label for="newPassword">Nouveau mot de passe :</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirmer le nouveau mot de passe :</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+    </form>
+    <h2>Supprimer votre compte</h2>
+    <form action="{{ path('app_user_delete') }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+        <button type="submit" class="btn btn-danger">Supprimer le compte</button>
+    </form>  #}
+
 </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# === FullCalendar en mode global (CDN) === #}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.18/index.global.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/web-component@6.1.18/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.18/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.18/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.18/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.18/locales/fr.global.min.js"></script>  
 {% endblock %}

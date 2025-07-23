@@ -102,6 +102,15 @@ class UserType extends AbstractType
                 ],
             ])
 
+            ->add('roles', ChoiceType::class, [
+                'choices'  => [
+                    'Utilisateur-rice' => 'ROLE_USER',
+                    'Administrateur-rice' => 'ROLE_ADMIN',
+                ],
+                'multiple' => true,
+                'expanded' => true, // checkbox
+            ])
+
             ->add('userInfo', UserInfoType::class);
     }
 

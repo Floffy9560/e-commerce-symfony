@@ -1,6 +1,6 @@
-{# {% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Panier{% endblock %}
+{% block title %}Mon panier{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('styles/cart.css') }}">
@@ -21,52 +21,6 @@
     </section>
 {% endif %}
 
-<section class="principalSection">
-
-    <h1>Votre panier</h1>
-
-    {% if cart is not empty %}
-        <table>
-            <tr>
-                <th>Produit</th>
-                <th>Quantité</th>
-                <th>Prix unitaire</th>
-                <th>Total</th>
-            </tr>
-            {% for entry in cart %}
-                <tr>
-                    <td>{{ entry.item.name }}</td>
-                    <td>{{ entry.quantity }}</td>
-                    <td>{{ entry.item.price|number_format(2, ',', ' ') }} €</td>
-                    <td>{{ (entry.item.price * entry.quantity)|number_format(2, ',', ' ') }} €</td>
-                    <td>
-                        <a href="{{ path('cart_remove', {id: entry.id}) }}" onclick="return confirm('Voulez-vous vraiment retirer ce produit ?');">🗑 Retirer</a>
-                    </td>
-                </tr>
-
-            {% endfor %}
-        </table>
-
-        <h3>Total : {{ total|number_format(2, ',', ' ') }} €</h3>
-
-    {% else %}
-        <p>Votre panier est vide.</p>
-    {% endif %}
-
-</section>
-
-{% endblock %}
- #}
-
-{% extends 'base.html.twig' %}
-
-{% block title %}Mon panier{% endblock %}
-
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('styles/cart.css') }}">
-{% endblock %}
-
-{% block body %}
 <section class="principalSection">
     <h2>Mon panier</h2>
 

@@ -25,4 +25,69 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    '@fullcalendar/core' => [
+        'version' => '6.1.18',
+    ],
+    '@fullcalendar/daygrid' => [
+        'version' => '6.1.18',
+    ],
+    '@fullcalendar/interaction' => [
+        'version' => '6.1.18',
+    ],
+
+    '@fullcalendar/core/index.js' => [
+        'version' => '6.1.18',
+    ],
+    '@fullcalendar/core/internal.js' => [
+        'version' => '6.1.18',
+    ],
+
+    'preact/hooks' => [
+        'version' => '10.12.1',
+    ],
+    '@fullcalendar/list' => [
+        'version' => '6.1.18',
+    ],
+    '@fullcalendar/core/locales/fr' => [
+        'version' => '6.1.18',
+    ],
+    // importation de preact 
+    // 'preact' => [
+    //     'version' => '10.12.1',
+    // ],
+    // 'preact/compat' => [
+    //     'version' => '10.12.1',
+    // ],
+    // '@fullcalendar/core/preact.js' => [
+    //     'version' => '6.1.18',
+    // ],
+    'preact' => [
+        'url' => 'https://cdn.jsdelivr.net/npm/preact@10.12.1/dist/preact.module.js',
+    ],
+    'preact/compat' => [
+        'url' => 'https://cdn.jsdelivr.net/npm/preact@10.12.1/compat/dist/compat.module.js',
+    ],
+    '@fullcalendar/core/preact.js' => [
+        'url' => 'https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.18/preact.js',
+    ],
 ];
+
+
+// return [
+//     'app' => [
+//         'path' => './assets/app.js',
+//         'entrypoint' => true,
+//     ],
+//     '@fullcalendar/core' => [
+//         'path' => 'https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.18/index.global.min.js',
+//     ],
+//     '@fullcalendar/daygrid' => [
+//         'path' => 'https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.18/index.global.min.js',
+//     ],
+//     '@fullcalendar/interaction' => [
+//         'path' => 'https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.18/index.global.min.js',
+//     ],
+//     '@fullcalendar/list' => [
+//         'path' => 'https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.18/index.global.min.js',
+//     ],
+// ];

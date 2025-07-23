@@ -80,12 +80,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(name: "id_user_infos", referencedColumnName: "id", nullable: false)]
     private ?UserInfo $userInfo = null;
 
-    /**
-     * ✅ Une seule relation ManyToOne vers Role
-     */
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Role $role = null;
 
     /**
      * ✅ OneToMany : un user peut avoir plusieurs RDV
@@ -129,7 +123,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    // Supprimé : la propriété email ici, puisque email est dans UserInfo
 
     public function __construct()
     {
@@ -207,16 +200,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): ?Role
-    {
-        return $this->role;
-    }
 
-    public function setRole(?Role $role): static
-    {
-        $this->role = $role;
-        return $this;
-    }
 
     /** @return Collection<int, Appointment> */
     public function getAppointments(): Collection
@@ -404,17 +388,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return $this->userInfo?->getFirstName() ?? '';
+        return $this->userInfo?->getEmail() ?? '';
     }
-    public function getEmail(): ?string
-    {
-        return $this->getUserInfo()?->getEmail();
-    }
+
     public function setEmail(?string $email): self
     {
         if ($this->userInfo) {
             $this->userInfo->setEmail($email);
         }
         return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->userInfo?->getFirstname();
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->userInfo?->getLastname();
+    }
+
+    public function getFullname(): ?string
+    {
+        if (!$this->userInfo) {
+            return null;
+        }
+        return $this->userInfo?->getFirstname() . ' ' . $this->userInfo->getLastname();
+    }
+    public function getEmail(): ?string
+    {
+        return $this->userInfo?->getEmail();
     }
 }

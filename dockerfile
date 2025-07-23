@@ -1,18 +1,21 @@
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev libzip-dev zip curl \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    git unzip libpq-dev libzip-dev zip curl postgresql-client \
+    && docker-php-ext-install pdo pdo_pgsql zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+# Installer Xdebug
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 
-# Composer
+# Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Symfony CLI
-RUN curl -sS https://get.symfony.com/cli/installer | bash \
-    && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
-
 WORKDIR /var/www/html
+
+# Copier les sources
+COPY popOptik/ ./
+
+EXPOSE 9000
+
+CMD ["php-fpm"]

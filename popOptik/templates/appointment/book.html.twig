@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmer votre rendez-vous{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/book.css') }}">
+{% endblock %}
+
+{% block body %}
+<section class="principalSection">
+
+   <div class="choiceDisplay"> 
+        <h1>Confirmer votre rendez-vous</h1>
+        <p>📅 <strong>Date choisie :</strong> {{ date }}</p>
+        <p>⏰ <strong>Heure choisie :</strong> {{ hour }}</p>
+
+        <form method="post" action="{{ path('appointment_save') }}">
+            <input type="hidden" name="date" value="{{ date }}">
+            <input type="hidden" name="hour" value="{{ hour }}">
+
+            <button type="submit" class="btn btn-primary">
+                ✅ Confirmer ce rendez-vous
+            </button>
+        </form>
+    </div>
+    
+</section>
+{% endblock %}

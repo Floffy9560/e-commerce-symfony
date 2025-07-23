@@ -1,0 +1,194 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}📅 Prendre un rendez-vous{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css"> #}
+    <link rel="stylesheet" href="{{ asset('styles/appointment.css') }}">
+{% endblock %}
+
+{% block body %}
+<section class="principalSection appointment-container">
+    <h1 class="appointment-title">📅 Prendre un rendez-vous</h1>
+
+    {% if app.flashes is not empty %}
+        <script>
+            window.flashMessages = [];
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    window.flashMessages.push({type: "{{ label }}", text: "{{ message|e('js') }}"});
+                {% endfor %}
+            {% endfor %}
+        </script>
+    {% endif %}
+
+
+    <!-- Calendrier -->
+    <div id="calendar"></div>
+
+    <!-- Créneaux horaires disponibles -->
+    <div id="slots-container">
+        <h2 style="margin-top:20px; text-align:center;">
+            Créneaux disponibles : <span id="selected-date">veuillez selectionner une date</span>
+        </h2>
+        <div id="available-slots"></div>
+
+        <!-- Bouton de confirmation -->
+        <div style="text-align:center;">
+            <button id="confirm-btn">✅ Confirmer ce rendez-vous</button>
+        </div>
+    </div>
+
+    <div id="flash-popup" class="flash-popup" style="display:none;">
+        <span id="flash-message"></span>
+        <button id="flash-close">✖</button>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script> #}
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const calendarEl = document.getElementById("calendar");
+    const selectedDateEl = document.getElementById("selected-date");
+    const slotsContainer = document.getElementById("available-slots");
+    const confirmBtn = document.getElementById("confirm-btn");
+
+    let chosenDate = null;
+    let chosenHour = null;
+
+    const possibleSlots = [
+        "10:00", "10:30", "11:00", "11:30",
+        "14:00", "14:30", "15:00", "15:30",
+        "16:00", "16:30", "17:00", "17:30"
+    ];
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth',
+        locale: "fr",
+        height: "auto",
+
+        validRange: {
+            start: new Date().toISOString().split('T')[0]  // Bloque avant aujourd'hui
+        },
+
+        windowResize: function () {
+            if (window.innerWidth < 768) {
+                calendar.changeView("listWeek");
+            } else {
+                calendar.changeView("dayGridMonth");
+            }
+        },
+
+        selectable: true,
+        businessHours: {
+            daysOfWeek: [1, 2, 3, 4, 5],
+            startTime: "10:00",
+            endTime: "18:00"
+        },
+        hiddenDays: [0, 6], // pas de weekend
+
+        events: "{{ path('appointment_events') }}",
+
+        eventDidMount: function(info) {
+            info.el.classList.add("fc-event-reserved");
+        },
+
+        dateClick: function(info) {
+            chosenDate = info.dateStr;
+            selectedDateEl.textContent = chosenDate;
+            confirmBtn.style.display = "none"; // cacher le bouton tant que pas de créneau choisi
+
+            fetch("{{ path('appointment_events') }}")
+                .then(response => response.json())
+                .then(events => {
+                    const bookedSlots = events
+                        .filter(e => e.start.startsWith(chosenDate))
+                        .map(e => e.start.substring(11,16));
+
+                    slotsContainer.innerHTML = "";
+                    possibleSlots.forEach(slot => {
+                        const btn = document.createElement("button");
+                        btn.textContent = slot;
+
+                        if (bookedSlots.includes(slot)) {
+                            btn.disabled = true;
+                            btn.textContent += " (réservé)";
+                        } else {
+                            btn.addEventListener("click", () => {
+                                chosenHour = slot;
+
+                                // Mise en surbrillance du créneau choisi
+                                document.querySelectorAll("#available-slots button").forEach(b => b.style.outline = "");
+                                btn.style.outline = "3px solid #28a745";
+
+                                confirmBtn.style.display = "inline-block";
+                            });
+                        }
+                        slotsContainer.appendChild(btn);
+                    });
+                });
+        }
+    });
+
+    calendar.render();
+
+    confirmBtn.addEventListener("click", () => {
+        if (!chosenDate || !chosenHour) return;
+
+        if (confirm(`Voulez-vous confirmer le rendez-vous le ${chosenDate} à ${chosenHour} ?`)) {
+            // Exemple POST AJAX vers Symfony (décommenter si prêt)
+            /*
+            fetch('{{ path("appointment_save") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ date: chosenDate, hour: chosenHour })
+            }).then(res => res.json())
+              .then(data => {
+                alert("Rendez-vous enregistré");
+                location.reload();
+              });
+            */
+
+            // Ou redirection vers formulaire prérempli
+            window.location.href = `/appointment/book/${chosenDate}/${chosenHour}`;
+        }
+    });
+});
+
+// ajouter un popup avec le message de succes/echec
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.flashMessages && window.flashMessages.length > 0) {
+        const popup = document.getElementById("flash-popup");
+        const msgEl = document.getElementById("flash-message");
+        const closeBtn = document.getElementById("flash-close");
+
+        // On prend le premier message
+        const msg = window.flashMessages[0];
+
+        popup.classList.add(msg.type); // success ou error
+        msgEl.textContent = msg.text;
+        popup.style.display = "flex";
+
+        // Fermeture au clic
+        closeBtn.addEventListener("click", () => {
+            popup.style.display = "none";
+        });
+
+        // Auto-fermeture après 4s
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 4000);
+    }
+});
+</script>
+
+{% endblock %}

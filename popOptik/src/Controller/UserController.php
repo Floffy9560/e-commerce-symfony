@@ -43,12 +43,8 @@ final class UserController extends AbstractController
         $userInfo = new UserInfo();
         $user->setUserInfo($userInfo);
 
-        // 👉 récupérer le rôle "user" (id = 2 en DB)
-        $defaultRole = $entityManager->getRepository(Role::class)->find(2);
-        if (!$defaultRole) {
-            throw new \Exception('Le rôle par défaut est introuvable en base');
-        }
-        $user->setRole($defaultRole);
+        // Rôle par défaut
+        $user->setRoles(['ROLE_USER']);
 
         $form = $this->createForm(UserType::class, $user);
 
@@ -62,17 +58,6 @@ final class UserController extends AbstractController
             $user->setPassword(
                 $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData())
             );
-            // $plainPassword = $form->get('plainPassword')->getData();
-
-            // // Hacher avant de l’enregistrer
-            // if ($plainPassword) {
-            //     // ✅ hachage
-            //     $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-            //     $user->setPassword($hashedPassword);
-            // } else {
-            //     throw new \Exception("Le mot de passe est obligatoire");
-            // }
-
 
             //Enregistrement en bdd
             $entityManager->persist($userInfo);
