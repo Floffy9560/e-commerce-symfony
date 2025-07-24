@@ -14,6 +14,8 @@ prendre des rendez-vous via un calendrier interactif (FullCalendar).
 ✅ Interface d’administration (EasyAdmin)
 ✅ Interface utilisateur responsive
 ✅ Base de données relationnelle (MySQL/PostgreSQL)
+✅ Méthodes de paiement : PayPal / Stripe
+
 
 🛠️ Technologies
 Symfony 6+
